@@ -1,22 +1,14 @@
+require('dotenv').config({path: '../.env'});
 
-const express = require('express');
+const app = require('./app');
+const PORT = process.env.PORT || 8000;
 
-const {createPool} = require("mysql");
 
-const pool = createPool({
-    host:"localhost",
-    user : "root",
-    password : "n3u3da!",
-    database : "portfolio_manager",
-    connectionLimit : "10"
+
+app.get('/', (req, res) => {
+    res.send('API is running...');
+  });
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
-
-pool.query("Select * from stock_prices where price_id = ?",['8'],(err,result,fields)=>{
-    if(err){
-        return err;
-    }
-    console.log(result);
-})
-
-
-
