@@ -8,7 +8,10 @@ app.use(express.json());
 
 const stockRoutes= require('./routes/stockRoutes.js');
 const transactionRoutes = require('./routes/transactionRoutes');
+const portfolioRoutes = require('./routes/portfolioRoutes');
 
+
+app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/stocks',stockRoutes);
 
