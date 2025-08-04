@@ -10,7 +10,7 @@ exports.getPortfolioByUserId = (req, res) => {
 };
 
 exports.updatePortfolioOnTransaction = (req, res) => {
-  const { userId, stockId } = req.params;
+  const { userId, stockId } = req.body;
   const { transaction_type, quantity, price } = req.body;
   if (!transaction_type || !quantity || !price) {
     return res.status(400).json({ error: 'Missing required fields: transaction_type, quantity, price' });
