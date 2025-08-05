@@ -31,7 +31,7 @@ function App() {
             <Route
               path="/*"
               element={
-                <ProtectedRoute>
+                // <ProtectedRoute>
                   <div className="flex h-screen">
                     <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
                     <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
@@ -49,7 +49,7 @@ function App() {
                       </main>
                     </div>
                   </div>
-                </ProtectedRoute>
+                // </ProtectedRoute>
               }
             />
           </Routes>
