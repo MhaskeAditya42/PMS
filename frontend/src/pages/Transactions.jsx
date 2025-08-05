@@ -21,10 +21,23 @@ const Transactions = () => {
   })
 
   useEffect(() => {
-    fetchData()
+    if (user?.id) {
+      fetchData()
+    } else {
+      setLoading(false)
+      toast.error("User not authenticated")
+    }
   }, [user])
 
   const fetchData = async () => {
+    if (!user?.id) {
+      toast.error("User not authenticated")
+      setTransactions([])
+      setStocks([])
+      setLoading(false)
+      return
+    }
+
     setLoading(true)
     try {
       const [transactionsRes, stocksRes] = await Promise.all([
@@ -37,6 +50,8 @@ const Transactions = () => {
     } catch (error) {
       console.error("Error fetching data:", error)
       toast.error("Failed to load transactions")
+      setTransactions([])
+      setStocks([])
     } finally {
       setLoading(false)
     }
@@ -212,7 +227,7 @@ const Transactions = () => {
                       </span>
                     </td>
                     <td className="py-4 text-gray-300">{transaction.quantity}</td>
-                    <td className="py-4 text-gray-300">${transaction.price?.toFixed(2)}</td>
+                    <td className="py-4 text-gray-300">${parseFloat(transaction.price || 0).toFixed(2)}</td>
                     <td className="py-4 text-gray-300">
                       {new Date(transaction.transaction_date).toLocaleDateString()}
                     </td>

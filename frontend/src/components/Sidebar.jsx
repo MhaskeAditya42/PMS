@@ -25,18 +25,18 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     <>
       {/* Mobile overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={() => setIsOpen(false)} />
+        <div className="fixed inset-0 bg-neutral-800 bg-opacity-50 z-40 lg:hidden" onClick={() => setIsOpen(false)} />
       )}
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 h-full w-64 bg-gray-800 border-r border-gray-700 transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed left-0 top-0 h-full w-64 bg-primary-600 border-r border-neutral-100 transform transition-transform duration-300 ease-in-out z-50 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 lg:static lg:z-auto`}
       >
-        <div className="flex items-center justify-between p-4 border-b border-gray-700">
-          <h1 className="text-xl font-bold text-primary-400">PMS Dashboard</h1>
-          <button onClick={() => setIsOpen(false)} className="lg:hidden text-gray-400 hover:text-white">
+        <div className="flex items-center justify-between p-4 border-b border-neutral-100">
+          <h1 className="text-xl font-bold text-neutral-50">PMS Dashboard</h1>
+          <button onClick={() => setIsOpen(false)} className="lg:hidden text-neutral-100 hover:text-secondary-500 transition-colors duration-200">
             <X size={24} />
           </button>
         </div>
@@ -47,8 +47,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors ${
-                  isActive ? "bg-primary-600 text-white border-r-4 border-primary-400" : ""
+                `flex items-center px-6 py-3 text-neutral-100 hover:bg-primary-400 hover:text-neutral-50 transition-colors duration-200 ${
+                  isActive ? "bg-primary-400 text-neutral-50 border-r-4 border-accent-500" : ""
                 }`
               }
               onClick={() => setIsOpen(false)}
@@ -59,10 +59,10 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           ))}
         </nav>
 
-        <div className="absolute bottom-0 w-full p-4 border-t border-gray-700">
+        <div className="absolute bottom-0 w-full p-4 border-t border-neutral-100">
           <button
             onClick={handleLogout}
-            className="flex items-center w-full px-2 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors rounded-lg"
+            className="flex items-center w-full px-2 py-3 text-neutral-100 hover:bg-primary-400 hover:text-neutral-50 transition-colors duration-200 rounded-lg"
           >
             <LogOut size={20} className="mr-3" />
             Logout

@@ -13,14 +13,25 @@ const Wallet = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchWallet()
-
-    // Set up polling for real-time updates every 30 seconds
-    const interval = setInterval(fetchWallet, 30000)
-    return () => clearInterval(interval)
+    if (user?.id) {
+      fetchWallet()
+      // Set up polling for real-time updates every 30 seconds
+      const interval = setInterval(fetchWallet, 30000)
+      return () => clearInterval(interval)
+    } else {
+      setLoading(false)
+      toast.error("User not authenticated")
+    }
   }, [user])
 
   const fetchWallet = async () => {
+    if (!user?.id) {
+      toast.error("User not authenticated")
+      setWallet(null)
+      setLoading(false)
+      return
+    }
+
     setLoading(true)
     try {
       const data = await walletAPI.getWalletBalance(user.id)
@@ -28,6 +39,7 @@ const Wallet = () => {
     } catch (error) {
       console.error("Error fetching wallet:", error)
       toast.error("Failed to load wallet information")
+      setWallet(null)
     } finally {
       setLoading(false)
     }
@@ -41,7 +53,7 @@ const Wallet = () => {
     )
   }
 
-  const isLowBalance = wallet?.balance < 100
+  const isLowBalance = parseFloat(wallet?.balance || 0) < 100
 
   return (
     <div className="space-y-6">
@@ -78,7 +90,7 @@ const Wallet = () => {
 
           <div className="text-center">
             <p className={`text-4xl font-bold mb-2 ${isLowBalance ? "text-red-400" : "text-green-400"}`}>
-              ${wallet?.balance?.toFixed(2) || "0.00"}
+              ${parseFloat(wallet?.balance || 0).toFixed(2)}
             </p>
             <p className="text-gray-400 text-sm">Available for trading</p>
           </div>

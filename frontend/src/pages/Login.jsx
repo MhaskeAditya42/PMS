@@ -71,7 +71,7 @@ const Login = () => {
                 name="username"
                 type="text"
                 required
-                className="input-field mt-1"
+                className="input-field mt-1 text-gray-300"
                 placeholder="Enter your username"
                 value={formData.username}
                 onChange={handleChange}
@@ -87,7 +87,7 @@ const Login = () => {
                 name="email"
                 type="email"
                 required
-                className="input-field mt-1"
+                className="input-field mt-1  text-gray-300"
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
@@ -103,7 +103,7 @@ const Login = () => {
                 name="password_hash"
                 type="password"
                 required
-                className="input-field mt-1"
+                className="input-field mt-1  text-gray-300"
                 placeholder="Enter your password"
                 value={formData.password_hash}
                 onChange={handleChange}

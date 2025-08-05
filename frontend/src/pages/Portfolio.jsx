@@ -13,10 +13,22 @@ const Portfolio = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchPortfolio()
+    if (user?.id) {
+      fetchPortfolio()
+    } else {
+      setLoading(false)
+      toast.error("User not authenticated")
+    }
   }, [user])
 
   const fetchPortfolio = async () => {
+    if (!user?.id) {
+      toast.error("User not authenticated")
+      setPortfolio([])
+      setLoading(false)
+      return
+    }
+
     setLoading(true)
     try {
       const data = await portfolioAPI.getUserPortfolio(user.id)
@@ -30,7 +42,7 @@ const Portfolio = () => {
     }
   }
 
-  const totalValue = portfolio.reduce((total, item) => total + item.quantity * item.avg_buy_price, 0)
+  const totalValue = portfolio.reduce((total, item) => total + item.quantity * parseFloat(item.avg_buy_price || 0), 0)
 
   if (loading) {
     return (
@@ -106,10 +118,10 @@ const Portfolio = () => {
                   <tr key={index} className="border-b border-gray-800">
                     <td className="py-4 text-white font-medium">{item.stock_id}</td>
                     <td className="py-4 text-gray-300">{item.quantity}</td>
-                    <td className="py-4 text-gray-300">${item.avg_buy_price?.toFixed(2)}</td>
+                    <td className="py-4 text-gray-300">${parseFloat(item.avg_buy_price || 0).toFixed(2)}</td>
                     <td className="py-4 text-gray-300">{item.current_quantity || item.quantity}</td>
                     <td className="py-4 text-green-400 font-medium">
-                      ${(item.quantity * item.avg_buy_price).toFixed(2)}
+                      ${(item.quantity * parseFloat(item.avg_buy_price || 0)).toFixed(2)}
                     </td>
                   </tr>
                 ))}

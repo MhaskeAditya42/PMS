@@ -18,14 +18,23 @@ const Dashboard = () => {
   })
 
   useEffect(() => {
-    fetchDashboardData()
-
-    // Set up polling for real-time updates every 30 seconds
-    const interval = setInterval(fetchDashboardData, 30000)
-    return () => clearInterval(interval)
+    if (user?.id) {
+      fetchDashboardData()
+      // Set up polling for real-time updates every 30 seconds
+      const interval = setInterval(fetchDashboardData, 30000)
+      return () => clearInterval(interval)
+    } else {
+      setLoading(false) // Stop loading if no user
+    }
   }, [user])
 
   const fetchDashboardData = async () => {
+    if (!user?.id) {
+      toast.error("User not authenticated")
+      setLoading(false)
+      return
+    }
+
     try {
       const [portfolioRes, walletRes, transactionsRes, watchlistRes] = await Promise.allSettled([
         portfolioAPI.getUserPortfolio(user.id),
@@ -37,7 +46,7 @@ const Dashboard = () => {
       setDashboardData({
         portfolio: portfolioRes.status === "fulfilled" ? portfolioRes.value : [],
         wallet: walletRes.status === "fulfilled" ? walletRes.value : null,
-        recentTransactions: transactionsRes.status === "fulfilled" ? portfolioRes.value?.slice(0, 5) || [] : [],
+        recentTransactions: transactionsRes.status === "fulfilled" ? transactionsRes.value?.slice(0, 5) || [] : [],
         watchlist: watchlistRes.status === "fulfilled" ? watchlistRes.value : [],
       })
     } catch (error) {
@@ -83,8 +92,12 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm">Wallet Balance</p>
-              <p className="text-2xl font-bold text-blue-400">${dashboardData.wallet?.balance?.toFixed(2) || "0.00"}</p>
-              {dashboardData.wallet?.balance < 100 && <p className="text-red-400 text-xs mt-1">Low balance!</p>}
+              <p className="text-2xl font-bold text-blue-400">
+                ${parseFloat(dashboardData.wallet?.balance || 0).toFixed(2)}
+              </p>
+              {parseFloat(dashboardData.wallet?.balance || 0) < 100 && (
+                <p className="text-red-400 text-xs mt-1">Low balance!</p>
+              )}
             </div>
             <Wallet className="text-blue-400" size={24} />
           </div>

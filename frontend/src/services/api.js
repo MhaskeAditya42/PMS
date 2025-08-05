@@ -73,7 +73,7 @@ export const portfolioAPI = {
 export const stocksAPI = {
   getAllStocks: async () => {
     try {
-      const response = await api.get("/stocks/getAllStocks")
+      const response = await api.get("/stocks")
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -81,7 +81,7 @@ export const stocksAPI = {
   },
   getStockById: async (stockId) => {
     try {
-      const response = await api.get(`/stocks/getStockById?id=${stockId}`)
+      const response = await api.get(`/stocks/${stockId}`)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -89,7 +89,7 @@ export const stocksAPI = {
   },
   createStock: async (stockData) => {
     try {
-      const response = await api.post("/stocks/createStock", stockData)
+      const response = await api.post("/stocks", stockData)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -97,7 +97,7 @@ export const stocksAPI = {
   },
   updateStock: async (stockData) => {
     try {
-      const response = await api.put("/stocks/updateStock", stockData)
+      const response = await api.put(`/stocks/${stockData.id}`, stockData)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -105,7 +105,7 @@ export const stocksAPI = {
   },
   deleteStock: async (stockId) => {
     try {
-      const response = await api.delete(`/stocks/deleteStocks?id=${stockId}`)
+      const response = await api.delete(`/stocks/${stockId}`)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -117,7 +117,7 @@ export const stocksAPI = {
 export const transactionsAPI = {
   createTransaction: async (transactionData) => {
     try {
-      const response = await api.post("/transactions/createTransaction", transactionData)
+      const response = await api.post("/transactions", transactionData)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -125,7 +125,7 @@ export const transactionsAPI = {
   },
   getAllTransactions: async () => {
     try {
-      const response = await api.get("/transactions/getAllTransactions")
+      const response = await api.get("/transactions")
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -133,7 +133,7 @@ export const transactionsAPI = {
   },
   getTransactionsByUserId: async (userId) => {
     try {
-      const response = await api.get(`/transactions/getTransactionByUserId?userId=${userId}`)
+      const response = await api.get(`/transactions/user/${userId}`)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -141,7 +141,7 @@ export const transactionsAPI = {
   },
   getTransactionById: async (transactionId) => {
     try {
-      const response = await api.get(`/transactions/getTransactionById?id=${transactionId}`)
+      const response = await api.get(`/transactions/${transactionId}`)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -149,7 +149,7 @@ export const transactionsAPI = {
   },
   deleteTransaction: async (transactionId) => {
     try {
-      const response = await api.delete(`/transactions/deleteTransactionById?id=${transactionId}`)
+      const response = await api.delete(`/transactions/${transactionId}`)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -161,7 +161,7 @@ export const transactionsAPI = {
 export const watchlistAPI = {
   addToWatchlist: async (data) => {
     try {
-      const response = await api.post("/watchlist/addtoWatchList", data)
+      const response = await api.post("/watchlist", data)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -169,7 +169,7 @@ export const watchlistAPI = {
   },
   getWatchlistByUserId: async (userId) => {
     try {
-      const response = await api.get(`/watchlist/getWatchlistByUserId?userId=${userId}`)
+      const response = await api.get(`/watchlist/${userId}`)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -177,7 +177,7 @@ export const watchlistAPI = {
   },
   removeFromWatchlist: async (userId, stockId) => {
     try {
-      const response = await api.delete(`/watchlist/removeStockfromWatchlist?userId=${userId}&stockId=${stockId}`)
+      const response = await api.delete(`/watchlist/user/${userId}/stock/${stockId}`)
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
