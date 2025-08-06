@@ -114,7 +114,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="card border border rounded-md p-6">
+        <div className="card border rounded-md p-6">
         <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm">Watchlist Items</p>

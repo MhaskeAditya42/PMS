@@ -111,6 +111,14 @@ export const stocksAPI = {
       throw error.response?.data || error.message
     }
   },
+  getStockPrice: async (stockId) => {
+    try {
+      const response = await api.get(`/stocks/price/${stockId}`)
+      return response.data
+    } catch (error) {
+      throw error.response?.data || error.message
+    }
+  },
 }
 
 // Transactions API

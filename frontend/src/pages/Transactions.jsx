@@ -17,7 +17,7 @@ const Transactions = () => {
     stock_id: "",
     transaction_type: "BUY",
     quantity: "",
-    price: "",
+    price: "", // Added to display the fetched price
   })
 
   useEffect(() => {
@@ -57,6 +57,34 @@ const Transactions = () => {
     }
   }
 
+  // Fetch price when stock_id changes
+  useEffect(() => {
+    const fetchPrice = async () => {
+      if (formData.stock_id) {
+        try {
+          const response = await stocksAPI.getStockPrice(formData.stock_id); // Assume this API exists
+          setFormData((prev) => ({
+            ...prev,
+            price: response.last_price || "",
+          }));
+        } catch (error) {
+          console.error("Error fetching stock price:", error);
+          setFormData((prev) => ({
+            ...prev,
+            price: "",
+          }));
+          toast.error("Failed to load stock price");
+        }
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          price: "",
+        }));
+      }
+    };
+    fetchPrice();
+  }, [formData.stock_id]);
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -64,7 +92,6 @@ const Transactions = () => {
         ...formData,
         user_id: user.id,
         quantity: Number.parseInt(formData.quantity),
-        price: Number.parseFloat(formData.price),
       })
 
       toast.success("Transaction created successfully")
@@ -172,10 +199,9 @@ const Transactions = () => {
                   type="number"
                   step="0.01"
                   value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                  className="input-field"
-                  required
-                  min="0.01"
+                  readOnly // Make it read-only to display fetched price
+                  className="input-field bg-gray-700 text-white"
+                  placeholder="Price will be fetched after selecting stock"
                 />
               </div>
 

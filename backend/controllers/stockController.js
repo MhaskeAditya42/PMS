@@ -1,6 +1,6 @@
 
 const db= require('../utils/db');
-
+const StockPrice = require("../models/stockPriceModel");
 
 
 exports.getAllStocks = (req, res) => {
@@ -65,6 +65,16 @@ exports.deleteStock = (req, res) => {
     res.json({ message: 'Stock deleted' });
   });
 };
+
+exports.getStockPrice = (req, res) => {
+  const stockId = req.params.stockId;
+  StockPrice.getLastPrice(stockId, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!result.length) return res.status(404).json({ message: 'Stock price not found' });
+    res.json({ last_price: result[0].last_price });
+  });
+};
+
 
 
   
