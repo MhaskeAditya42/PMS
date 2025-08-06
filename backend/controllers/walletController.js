@@ -21,3 +21,20 @@ exports.updateWalletOnTransaction = (req, res, next) => {
     next();
   });
 };
+
+exports.addBalanceToWallet = (req, res) => {
+  const { user_id, amount } = req.body;
+
+  if (!user_id || amount === undefined) {
+    return res.status(400).json({ error: 'Missing user_id or amount' });
+  }
+
+  if (amount <= 0) {
+    return res.status(400).json({ error: 'Amount must be greater than zero' });
+  }
+
+  Wallet.updateWallet(user_id, amount, (err) => {
+    if (err) return res.status(500).json({ error: err });
+    res.status(200).json({ message: 'Balance added successfully' });
+  });
+};

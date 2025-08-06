@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import { useAuth } from "../context/AuthContext"
-import { stocksAPI } from "../services/api"
+import { stocksAPI, watchlistAPI } from "../services/api"
 import LoadingSpinner from "../components/LoadingSpinner"
 import { Search, Plus, Edit, Trash2, RefreshCw, TrendingUp } from "lucide-react"
 
 const Stocks = () => {
   const { user } = useAuth()
   const [stocks, setStocks] = useState([])
+  const [watchlist, setWatchlist]= useState([])
   const [filteredStocks, setFilteredStocks] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -21,7 +22,6 @@ const Stocks = () => {
     series: "",
   })
 
-  // Check if user is admin (simplified check)
   const isAdmin = user?.id === "admin_pms" || user?.role === "admin"
 
   useEffect(() => {
@@ -29,7 +29,6 @@ const Stocks = () => {
   }, [])
 
   useEffect(() => {
-    // Filter stocks based on search term
     const filtered = stocks.filter(
       (stock) =>
         stock.symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -95,6 +94,16 @@ const Stocks = () => {
         console.error("Error deleting stock:", error)
         toast.error("Failed to delete stock")
       }
+    }
+  }
+
+  const handleAddToWatchlist = async (stockId) => {
+    try {
+      await watchlistAPI.addToWatchlist(stockId, user?.id)
+      toast.success("Added to watchlist")
+    } catch (error) {
+      console.error("Error adding to watchlist:", error)
+      toast.error("Failed to add to watchlist")
     }
   }
 
@@ -214,7 +223,10 @@ const Stocks = () => {
                   <th className="pb-3 text-gray-400 font-medium">Symbol</th>
                   <th className="pb-3 text-gray-400 font-medium">ISIN</th>
                   <th className="pb-3 text-gray-400 font-medium">Series</th>
-                  {isAdmin && <th className="pb-3 text-gray-400 font-medium">Actions</th>}
+                  <th className="pb-3 text-green-400 font-medium">Low</th>
+                  <th className="pb-3 text-yellow-400 font-medium">High</th>
+                  <th className="pb-3 text-red-400 font-medium">Close Price</th>
+                  <th className="pb-3 text-gray-400 font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -224,21 +236,32 @@ const Stocks = () => {
                     <td className="py-4 text-gray-300 font-medium">{stock.symbol}</td>
                     <td className="py-4 text-gray-300">{stock.isin}</td>
                     <td className="py-4 text-gray-300">{stock.series}</td>
-                    {isAdmin && (
-                      <td className="py-4">
-                        <div className="flex space-x-2">
-                          <button onClick={() => handleEdit(stock)} className="text-blue-400 hover:text-blue-300">
-                            <Edit size={16} />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(stock.stock_id)}
-                            className="text-red-400 hover:text-red-300"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </td>
-                    )}
+                    <td className="py-4 text-green-300">{stock.low_price}</td>
+                    <td className="py-4 text-yellow-300">{stock.high_price}</td>
+                    <td className="py-4 text-red-300">{stock.close_price}</td>
+                    <td className="py-4">
+                      <div className="flex space-x-2">
+                        {isAdmin && (
+                          <>
+                            <button onClick={() => handleEdit(stock)} className="text-blue-400 hover:text-blue-300">
+                              <Edit size={16} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(stock.stock_id)}
+                              className="text-red-400 hover:text-red-300"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </>
+                        )}
+                        <button
+                          onClick={() => handleAddToWatchlist(stock.stock_id)}
+                          className="text-green-400 hover:text-green-300"
+                        >
+                          + Watchlist
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>

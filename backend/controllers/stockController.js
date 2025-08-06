@@ -1,12 +1,31 @@
 
 const db= require('../utils/db');
 
+
+
 exports.getAllStocks = (req, res) => {
-    db.query('SELECT * FROM stocks', (err, results) => {
-      if (err) return res.status(500).json({ message: 'Error fetching stocks', error: err });
-      res.json(results);
-    });
-  };
+  const query = `
+    SELECT s.*, sp.low_price, sp.high_price, sp.close_price
+    FROM stocks s
+    LEFT JOIN (
+      SELECT sp1.*
+      FROM stock_prices sp1
+      INNER JOIN (
+        SELECT stock_id, MAX(trade_date) as latest_date
+        FROM stock_prices
+        GROUP BY stock_id
+      ) sp2 ON sp1.stock_id = sp2.stock_id AND sp1.trade_date = sp2.latest_date
+    ) sp ON s.stock_id = sp.stock_id
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error fetching stocks with prices', error: err });
+    }
+    res.json(results);
+  });
+};
+
 
   exports.getStockById = (req, res) => {
     const stockId = req.params.id;

@@ -159,9 +159,9 @@ export const transactionsAPI = {
 
 // Watchlist API
 export const watchlistAPI = {
-  addToWatchlist: async (data) => {
+  addToWatchlist: async (stockId, userId) => {
     try {
-      const response = await api.post("/watchlist", data)
+      const response = await api.post(`/watchlist/${userId}`, { stock_id: stockId })
       return response.data
     } catch (error) {
       throw error.response?.data || error.message
@@ -190,6 +190,15 @@ export const walletAPI = {
   getWalletBalance: async (userId) => {
     try {
       const response = await api.get(`/wallet/${userId}`)
+      return response.data
+    } catch (error) {
+      throw error.response?.data || error.message
+    }
+  },
+
+  addBalance: async (userId, amount) => {
+    try {
+      const response = await api.post("/wallet/add", { user_id: userId, amount })
       return response.data
     } catch (error) {
       throw error.response?.data || error.message

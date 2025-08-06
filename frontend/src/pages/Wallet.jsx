@@ -11,11 +11,12 @@ const Wallet = () => {
   const { user } = useAuth()
   const [wallet, setWallet] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [addAmount, setAddAmount] = useState("")
+  const [adding, setAdding] = useState(false)
 
   useEffect(() => {
     if (user?.id) {
       fetchWallet()
-      // Set up polling for real-time updates every 30 seconds
       const interval = setInterval(fetchWallet, 30000)
       return () => clearInterval(interval)
     } else {
@@ -42,6 +43,26 @@ const Wallet = () => {
       setWallet(null)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleAddBalance = async () => {
+    if (!addAmount || isNaN(addAmount) || parseFloat(addAmount) <= 0) {
+      toast.error("Please enter a valid amount greater than 0")
+      return
+    }
+
+    try {
+      setAdding(true)
+      await walletAPI.addBalance(user.id, parseFloat(addAmount))
+      toast.success("Balance added successfully")
+      setAddAmount("")
+      fetchWallet()
+    } catch (error) {
+      console.error("Error adding balance:", error)
+      toast.error("Failed to add balance")
+    } finally {
+      setAdding(false)
     }
   }
 
@@ -138,13 +159,28 @@ const Wallet = () => {
         <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <button className="btn-primary p-4 text-left">
-            <div>
-              <p className="font-medium">Add Funds</p>
-              <p className="text-sm opacity-75">Deposit money to your wallet</p>
+          {/* Add Funds */}
+          <div className="p-4 text-left border border-gray-700 rounded-lg">
+            <p className="font-medium text-white mb-2">Add Funds</p>
+            <div className="flex flex-col space-y-2">
+              <input
+                type="number"
+                placeholder="Enter amount"
+                value={addAmount}
+                onChange={(e) => setAddAmount(e.target.value)}
+                className="input bg-gray-800 text-white border border-gray-600 rounded p-2"
+              />
+              <button
+                className="btn-primary p-2 flex justify-center items-center"
+                onClick={handleAddBalance}
+                disabled={adding}
+              >
+                {adding ? "Adding..." : "Add Funds"}
+              </button>
             </div>
-          </button>
+          </div>
 
+          {/* Transaction History */}
           <button className="btn-secondary p-4 text-left">
             <div>
               <p className="font-medium">Transaction History</p>
