@@ -128,7 +128,7 @@ const Dashboard = () => {
       {/* Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Portfolio Holdings */}
-        <div className="card">
+        <div className="card border p-8 rounded-md">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
             <TrendingUp className="mr-2" size={20} />
             Portfolio Holdings
@@ -153,7 +153,7 @@ const Dashboard = () => {
         </div>
 
         {/* Watchlist */}
-        <div className="card">
+        <div className="card border p-8 rounded-md">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
             <Eye className="mr-2" size={20} />
             Watchlist
