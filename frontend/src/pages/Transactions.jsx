@@ -253,7 +253,7 @@ const Transactions = () => {
                       </span>
                     </td>
                     <td className="py-4 text-gray-300">{transaction.quantity}</td>
-                    <td className="py-4 text-gray-300">${parseFloat(transaction.price || 0).toFixed(2)}</td>
+                    <td className="py-4 text-gray-300">₹{parseFloat(transaction.price || 0).toFixed(2)}</td>
                     <td className="py-4 text-gray-300">
                       {new Date(transaction.transaction_date).toLocaleDateString()}
                     </td>

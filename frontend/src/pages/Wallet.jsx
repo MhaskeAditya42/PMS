@@ -111,7 +111,7 @@ const Wallet = () => {
 
           <div className="text-center">
             <p className={`text-4xl font-bold mb-2 ${isLowBalance ? "text-red-400" : "text-green-400"}`}>
-              ${parseFloat(wallet?.balance || 0).toFixed(2)}
+              ₹{parseFloat(wallet?.balance || 0).toFixed(2)}
             </p>
             <p className="text-gray-400 text-sm">Available for trading</p>
           </div>

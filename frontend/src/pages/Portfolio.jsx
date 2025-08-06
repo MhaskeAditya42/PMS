@@ -68,7 +68,7 @@ const Portfolio = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm">Total Value</p>
-              <p className="text-2xl font-bold text-green-400">${totalValue.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-green-400">₹{totalValue.toFixed(2)}</p>
             </div>
             <TrendingUp className="text-green-400" size={24} />
           </div>
@@ -118,10 +118,10 @@ const Portfolio = () => {
                   <tr key={index} className="border-b border-gray-800">
                     <td className="py-4 text-white font-medium">{item.stock_id}</td>
                     <td className="py-4 text-gray-300">{item.quantity}</td>
-                    <td className="py-4 text-gray-300">${parseFloat(item.avg_buy_price || 0).toFixed(2)}</td>
+                    <td className="py-4 text-gray-300">₹{parseFloat(item.avg_buy_price || 0).toFixed(2)}</td>
                     <td className="py-4 text-gray-300">{item.current_quantity || item.quantity}</td>
                     <td className="py-4 text-green-400 font-medium">
-                      ${(item.quantity * parseFloat(item.avg_buy_price || 0)).toFixed(2)}
+                      ₹{(item.quantity * parseFloat(item.avg_buy_price || 0)).toFixed(2)}
                     </td>
                   </tr>
                 ))}

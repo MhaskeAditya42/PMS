@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
-  ,"test":"jest"},
+    "start": "nodemon server.js",
+    "test": "jest"
+  },
   "author": "",
   "license": "ISC",
   "description": "",

@@ -83,7 +83,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm">Portfolio Value</p>
-              <p className="text-2xl font-bold text-green-400">${portfolioValue.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-green-400">₹{portfolioValue.toFixed(2)}</p>
             </div>
             <TrendingUp className="text-green-400" size={24} />
           </div>
@@ -94,7 +94,7 @@ const Dashboard = () => {
             <div>
               <p className="text-gray-400 text-sm">Wallet Balance</p>
               <p className="text-2xl font-bold text-blue-400">
-                ${parseFloat(dashboardData.wallet?.balance || 0).toFixed(2)}
+                ₹ {parseFloat(dashboardData.wallet?.balance || 0).toFixed(2)}
               </p>
               {parseFloat(dashboardData.wallet?.balance || 0) < 100 && (
                 <p className="text-red-400 text-xs mt-1">Low balance!</p>
@@ -141,8 +141,8 @@ const Dashboard = () => {
                   <p className="text-sm text-gray-400">Qty: {item.quantity}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium text-green-400">${(item.quantity * item.avg_buy_price).toFixed(2)}</p>
-                  <p className="text-sm text-gray-400">@${item.avg_buy_price}</p>
+                  <p className="font-medium text-green-400">₹{(item.quantity * item.avg_buy_price).toFixed(2)}</p>
+                  <p className="text-sm text-gray-400">@₹{item.avg_buy_price}</p>
                 </div>
               </div>
             ))}
