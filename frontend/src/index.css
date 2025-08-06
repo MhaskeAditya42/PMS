@@ -1,5 +1,55 @@
 @import "tailwindcss";
 
+*{
+  background-color: white;
+  color:black;
+}
+
+h1,h2{
+  color : blue;
+}
+
+
+.sidebar:hover{
+  background-color: rgba(0, 0, 255, 0.692);
+  color:white;
+  border:transparent;
+  border-radius:15px;  
+}
+
+
+
+.sidebar:hover .sidebar-icon{
+  background-color: transparent !important;
+  border:none;
+}
+
+
+button:hover{
+  cursor:pointer
+}
+
+#logout-btn{
+  color: red;
+}
+
+.logout-icon{
+  background:transparent !important;
+}
+
+
+#logout-btn:hover{
+  scale:1.15;
+  cursor:pointer;
+  background-color: red;
+  color:white
+}
+
+
+#sidebar-icons{
+  outline: none;
+  border:transparent;
+}
 /* @tailwind utilities;
 
 @layer base {

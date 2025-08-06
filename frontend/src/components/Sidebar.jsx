@@ -34,9 +34,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 lg:static lg:z-auto`}
       >
-        <div className="flex items-center justify-between p-4 border-b border-neutral-100">
+        <div className="flex items-center justify-between px-4 py-[14px] border-b border-neutral-100">
           <h1 className="text-xl font-bold text-neutral-50">PMS Dashboard</h1>
-          <button onClick={() => setIsOpen(false)} className="lg:hidden text-neutral-100 hover:text-secondary-500 transition-colors duration-200">
+          <button onClick={() => setIsOpen(false)} className="lg:hidden text-neutral-100 hover:text-secondary-50 transition-colors duration-200">
             <X size={24} />
           </button>
         </div>
@@ -47,25 +47,25 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center px-6 py-3 text-neutral-100 hover:bg-primary-400 hover:text-neutral-50 transition-colors duration-200 ${
-                  isActive ? "bg-primary-400 text-neutral-50 border-r-4 border-accent-500" : ""
+                `sidebar flex items-center px-6 py-3 ${
+                  isActive ?  "text-neutral-50 border-r-4 border-accent-500" : "bg-amber-300"
                 }`
               }
               onClick={() => setIsOpen(false)}
             >
-              <item.icon size={20} className="mr-3" />
+              <item.icon size={20} className="sidebar-icon mr-3" />
               {item.label}
             </NavLink>
           ))}
         </nav>
 
         <div className="absolute bottom-0 w-full p-4 border-t border-neutral-100">
-          <button
+          <button id="logout-btn"
             onClick={handleLogout}
-            className="flex items-center w-full px-2 py-3 text-neutral-100 hover:bg-primary-400 hover:text-neutral-50 transition-colors duration-200 rounded-lg"
+            className="flex items-center w-full px-2 py-3 hover:bg-primary-400 hover:text-neutral-50 transition-colors duration-200 rounded-lg"
           >
-            <LogOut size={20} className="mr-3" />
-            Logout
+            <LogOut size={20} className="logout-icon mr-3" />
+            LogOut
           </button>
         </div>
       </div>

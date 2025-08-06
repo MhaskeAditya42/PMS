@@ -75,10 +75,11 @@ const Dashboard = () => {
           Refresh
         </button>
       </div>
+      <p>Welcome back User! The following is your portfolio summary</p>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="card">
+        <div className="card border-black border p-6 rounded-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm">Portfolio Value</p>
@@ -88,7 +89,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card border-black border p-6 rounded-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm">Wallet Balance</p>
@@ -103,7 +104,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card border-black border p-6 rounded-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm">Total Stocks</p>
@@ -113,8 +114,8 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="card">
-          <div className="flex items-center justify-between">
+        <div className="card border border rounded-md p-6">
+        <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm">Watchlist Items</p>
               <p className="text-2xl font-bold text-yellow-400">{dashboardData.watchlist.length}</p>
@@ -146,7 +147,7 @@ const Dashboard = () => {
               </div>
             ))}
             {dashboardData.portfolio.length === 0 && (
-              <p className="text-gray-400 text-center py-4">No portfolio holdings</p>
+              <p className="text-gray-400 text-center border rounded-md py-30">No portfolio holdings</p>
             )}
           </div>
         </div>
@@ -167,7 +168,7 @@ const Dashboard = () => {
               </div>
             ))}
             {dashboardData.watchlist.length === 0 && (
-              <p className="text-gray-400 text-center py-4">No watchlist items</p>
+              <p className="text-gray-400 text-center border rounded-md py-30">No watchlist items</p>
             )}
           </div>
         </div>
