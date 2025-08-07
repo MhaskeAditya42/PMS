@@ -162,7 +162,7 @@ const Dashboard = () => {
             {dashboardData.watchlist.slice(0, 5).map((item, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
                 <div>
-                  <p className="font-medium text-white"> Stock Symbol: {item.symbol}</p>
+                  <p className="font-medium text-white">{item.symbol}</p>
                    <p className="font-medium text-white"> Prev Close Price: {item.prev_close}</p>
                   <p className="text-sm text-gray-400">Added on: {new Date(item.created_at).toLocaleDateString()}</p>
                 </div>

@@ -154,12 +154,12 @@ const Watchlist = () => {
                       <h4 className="font-semibold text-white">{stockDetails.symbol || `Stock ${item.stock_id}`}</h4>
                       <p className="text-sm text-gray-400">ISIN: {stockDetails.isin || "N/A"}</p>
                     </div>
-                    <button
+                    {/* <button
                       onClick={() => handleRemoveFromWatchlist(item.stock_id)}
                       className="text-red-400 hover:text-red-300"
                     >
                       <Trash2 size={16} />
-                    </button>
+                    </button> */}
                   </div>
 
                   <div className="space-y-2">
