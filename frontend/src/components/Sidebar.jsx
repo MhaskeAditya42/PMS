@@ -19,6 +19,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { path: "/watchlist", icon: Eye, label: "Watchlist" },
     { path: "/wallet", icon: Wallet, label: "Wallet" },
     { path: "/stocks", icon: TrendingUp, label: "Stocks" },
+    { path: "/gold", icon: TrendingUp, label: "Digital Gold" },
   ]
 
   return (
