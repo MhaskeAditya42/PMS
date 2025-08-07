@@ -57,18 +57,18 @@ const Watchlist = () => {
     }
   }
 
-  const handleRemoveFromWatchlist = async (stockId) => {
-    if (window.confirm("Are you sure you want to remove this stock from your watchlist?")) {
-      try {
-        await watchlistAPI.removeFromWatchlist(user.id, stockId)
-        toast.success("Stock removed from watchlist")
-        fetchData()
-      } catch (error) {
-        console.error("Error removing from watchlist:", error)
-        toast.error("Failed to remove stock from watchlist")
-      }
+ const handleRemoveFromWatchlist = async (stockId) => {
+  if (window.confirm("Are you sure you want to remove this stock from your watchlist?")) {
+    try {
+      await watchlistAPI.removeFromWatchlist(user.id, stockId);
+      toast.success("Stock removed from watchlist");
+      fetchData();
+    } catch (error) {
+      console.error("Error removing from watchlist:", error);
+      toast.error("Failed to remove stock from watchlist");
     }
   }
+};
 
   const getStockDetails = (stockId) => {
     return stocks.find((stock) => stock.stock_id === stockId) || {}
@@ -91,10 +91,10 @@ const Watchlist = () => {
             <RefreshCw className="mr-2" size={16} />
             Refresh
           </button>
-          <button onClick={() => setShowForm(true)} className="btn-primary flex items-center">
+          {/* <button onClick={() => setShowForm(true)} className="btn-primary flex items-center">
             <Plus className="mr-2" size={16} />
             Add Stock
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -164,15 +164,15 @@ const Watchlist = () => {
 
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Stock ID:</span>
-                      <span className="text-white">{item.stock_id}</span>
+                      <span className="text-gray-400">Previous Close:</span>
+                      <span className="text-white">{item.prev_close}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-400">Series:</span>
                       <span className="text-white">{stockDetails.series || "N/A"}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Added:</span>
+                      <span className="text-gray-400">Added On:</span>
                       <span className="text-white">{new Date(item.created_at).toLocaleDateString()}</span>
                     </div>
                   </div>

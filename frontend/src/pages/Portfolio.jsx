@@ -51,7 +51,7 @@ const Portfolio = () => {
 
   // Prepare data for Pie Chart (Portfolio value distribution by stock)
   const portfolioValueData = {
-    labels: portfolio.map((item) => item.stock_id),
+    labels: portfolio.map((item) => item.symbol),
     datasets: [
       {
         data: portfolio.map((item) => item.quantity * parseFloat(item.avg_buy_price || 0)),
@@ -140,7 +140,34 @@ const Portfolio = () => {
                   data={portfolioValueData}
                   options={{
                     plugins: {
-                      legend: { labels: { color: "#ffffff" } },
+                      legend: {
+                        position: "right",
+                        labels: {
+                          color: "#ffffff",
+                          boxWidth: 20,
+                          padding: 20,
+                          generateLabels: (chart) => {
+                            const { data } = chart;
+                            return data.labels.map((label, index) => ({
+                              text: label,
+                              fillStyle: data.datasets[0].backgroundColor[index],
+                              strokeStyle: data.datasets[0].borderColor[index],
+                              lineWidth: 1,
+                              hidden: false,
+                              index,
+                            }));
+                          },
+                        },
+                      },
+                      tooltip: {
+                        callbacks: {
+                          label: (context) => {
+                            const label = context.label || "";
+                            const value = context.raw || 0;
+                            return `${label}: ₹${value.toFixed(2)}`;
+                          },
+                        },
+                      },
                     },
                   }}
                 />
@@ -176,7 +203,7 @@ const Portfolio = () => {
             <table className="w-full text-left">
               <thead className="sticky top-0 bg-gray-800">
                 <tr className="border-b border-gray-700">
-                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Stock ID</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Stock Symbol</th>
                   <th className="pb-3 px-4 text-gray-400 font-medium w-24 text-right">Quantity</th>
                   <th className="pb-3 px-4 text-gray-400 font-medium w-28 text-right">Avg Buy Price</th>
                   <th className="pb-3 px-4 text-gray-400 font-medium w-28 text-right">Current Quantity</th>
@@ -189,7 +216,7 @@ const Portfolio = () => {
                     key={index}
                     className="border-b border-gray-800 hover:bg-gray-700 transition-colors"
                   >
-                    <td className="py-4 px-4 text-white font-medium">{item.stock_id}</td>
+                    <td className="py-4 px-4 text-white font-medium">{item.symbol}</td>
                     <td className="py-4 px-4 text-gray-300 text-right">{item.quantity}</td>
                     <td className="py-4 px-4 text-gray-300 text-right">₹{parseFloat(item.avg_buy_price || 0).toFixed(2)}</td>
                     <td className="py-4 px-4 text-gray-300 text-right">{item.current_quantity || item.quantity}</td>

@@ -300,7 +300,7 @@ const Transactions = () => {
               <thead className="sticky top-0 bg-gray-800">
                 <tr className="border-b border-gray-700">
                   <th className="pb-3 px-4 text-gray-400 font-medium w-16">ID</th>
-                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Stock ID</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Symbol</th>
                   <th className="pb-3 px-4 text-gray-400 font-medium w-24">Type</th>
                   <th className="pb-3 px-4 text-gray-400 font-medium w-24 text-right">Quantity</th>
                   <th className="pb-3 px-4 text-gray-400 font-medium w-24 text-right">Price</th>
@@ -315,7 +315,7 @@ const Transactions = () => {
                     className="border-b border-gray-800 hover:bg-gray-700 transition-colors"
                   >
                     <td className="py-4 px-4 text-white font-medium">{transaction.transaction_id}</td>
-                    <td className="py-4 px-4 text-gray-300">{transaction.stock_id}</td>
+                    <td className="py-4 px-4 text-gray-300">{transaction.symbol}</td>
                     <td className="py-4 px-4">
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium ${

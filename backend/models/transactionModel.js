@@ -15,7 +15,10 @@ exports.createTransaction = (transaction, callback) => {
 };
 
 exports.getTransactionsByUserId = (user_id, callback) => {
-  db.query('SELECT * FROM transactions WHERE user_id = ?', [user_id], callback);
+  db.query(`SELECT t.*, s.symbol
+    FROM transactions t
+    JOIN stocks s ON t.stock_id = s.stock_id
+    WHERE t.user_id = ?`, [user_id], callback);
 };
 
 exports.getTransactionById = (id, callback) => {
