@@ -148,7 +148,7 @@ const Watchlist = () => {
             {watchlist.map((item) => {
               const stockDetails = getStockDetails(item.stock_id)
               return (
-                <div key={item.stock_id} className="bg-gray-700 rounded-lg p-4">
+                <div key={item.stock_id} className="bg-gray-700 rounded-lg p-6 border-1 ">
                   <div className="flex items-center justify-between mb-3">
                     <div>
                       <h4 className="font-semibold text-white">{stockDetails.symbol || `Stock ${item.stock_id}`}</h4>
