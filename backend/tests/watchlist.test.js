@@ -9,7 +9,7 @@ describe('Watchlist API', () => {
 
   it('GET /api/watchlist/:userId - should return watchlist', async () => {
     db.query.mockImplementation((query, params, callback) => {
-      callback(null, [{ stock_id: 1 }]);
+      callback(null, [{ stock_id: 29 }]);
     });
 
     const res = await request(app).get('/api/watchlist/1');
@@ -22,7 +22,7 @@ describe('Watchlist API', () => {
       callback(null, { insertId: 99 });
     });
 
-    const res = await request(app).post('/api/watchlist/1').send({ stock_id: 2 });
+    const res = await request(app).post('/api/watchlist/1').send({ stock_id: 29 });
     expect(res.statusCode).toBe(201);
     expect(res.body.watchlist_id).toBe(99);
   });
@@ -32,8 +32,10 @@ describe('Watchlist API', () => {
       callback(null);
     });
 
-    const res = await request(app).delete('/api/watchlist/1').send({ stock_id: 2 });
+    const res = await request(app).delete('/api/watchlist/1').send({ stock_id: 29 });
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toMatch(/removed/i);
   });
 });
+
+

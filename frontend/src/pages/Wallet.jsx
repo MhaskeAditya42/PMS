@@ -181,12 +181,6 @@ const Wallet = () => {
           </div>
 
           {/* Transaction History */}
-          <button className="btn-secondary p-4 text-left">
-            <div>
-              <p className="font-medium">Transaction History</p>
-              <p className="text-sm opacity-75">View your wallet transactions</p>
-            </div>
-          </button>
         </div>
       </div>
     </div>

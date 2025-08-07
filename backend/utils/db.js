@@ -9,10 +9,32 @@
 //     connectionLimit : "10"
 // });
 
+// Establishes connection,avoids logging during jest test
+const mysql = require('mysql2');
 
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'n3u3da!',
+  database: 'portfolio_manager'
+});
 
+// Don’t log inside test environments
+if (process.env.NODE_ENV !== 'test') {
+  connection.connect(err => {
+    if (err) {
+      console.error('DB connection error:', err);
+    } else {
+      console.log('Connected to MySQL');
+    }
+  });
+} else {
+  connection.connect(); // skip logging
+}
 
+module.exports = connection;
 
+/*
 // backend/models/db.js
 const mysql = require('mysql2');
 const connection = mysql.createConnection({
@@ -28,5 +50,6 @@ connection.connect((err) => {
 });
 
 module.exports = connection;
+*/
 
 

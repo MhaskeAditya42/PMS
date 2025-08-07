@@ -18,6 +18,7 @@ import Transactions from "./pages/Transactions"
 import Watchlist from "./pages/Watchlist"
 import Wallet from "./pages/Wallet"
 import Stocks from "./pages/Stocks"
+import GoldPage from "./pages/GoldPage"
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -45,6 +46,7 @@ function App() {
                           <Route path="/watchlist" element={<Watchlist />} />
                           <Route path="/wallet" element={<Wallet />} />
                           <Route path="/stocks" element={<Stocks />} />
+                          <Route path="/gold" element={<GoldPage />} />
                         </Routes>
                       </main>
                     </div>

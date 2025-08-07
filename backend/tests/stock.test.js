@@ -9,7 +9,7 @@ describe('Stock API', () => {
 
   it('GET /api/stocks - should return all stocks', async () => {
     db.query.mockImplementation((query, callback) => {
-      callback(null, [{ stock_id: 1, symbol: 'AAPL' }]);
+      callback(null, [{ stock_id: 20, symbol: '20MICRONS' }]);
     });
 
     const res = await request(app).get('/api/stocks');
@@ -19,26 +19,27 @@ describe('Stock API', () => {
 
   it('GET /api/stocks/:id - should return specific stock', async () => {
     db.query.mockImplementation((query, params, callback) => {
-      callback(null, [{ stock_id: 1, symbol: 'AAPL' }]);
+      callback(null, [{ stock_id: 20, symbol: '20MICRONS' }]);
     });
 
     const res = await request(app).get('/api/stocks/1');
     expect(res.statusCode).toBe(200);
-    expect(res.body.symbol).toBe('AAPL');
+    expect(res.body.symbol).toBe('20MICRONS');
   });
 
   it('POST /api/stocks - should create a stock', async () => {
     db.query.mockImplementation((query, params, callback) => {
-      callback(null, { insertId: 101 });
+      callback(null, { insertId: 38 });
     });
 
     const res = await request(app).post('/api/stocks').send({
-      symbol: 'GOOG',
-      isin: 'US1234567890',
+      symbol: 'ACE',
+      isin: 'ACE',
       series: 'EQ'
     });
-
+    	
     expect(res.statusCode).toBe(201);
-    expect(res.body.symbol).toBe('GOOG');
+    expect(res.body.symbol).toBe('ACE');
   });
 });
+

@@ -213,3 +213,33 @@ export const walletAPI = {
     }
   },
 }
+
+// Gold API
+export const goldAPI = {
+  getGoldDetails: async (userId) => {
+    try {
+      const response = await api.get(`/gold/${userId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  buyGold: async (userId, quantity) => {
+    try {
+      const response = await api.post("/gold/buy", { user_id: userId, quantity });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  sellGold: async (userId, quantity) => {
+    try {
+      const response = await api.post("/gold/sell", { user_id: userId, quantity });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+};

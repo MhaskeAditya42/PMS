@@ -2,6 +2,7 @@
 
 const request = require('supertest');
 const app = require('../app');
+const db = require('../utils/db');
 
 describe('Login API', () => {
   test('POST /api/login - should return 400 if required fields are missing', async () => {
@@ -11,4 +12,7 @@ describe('Login API', () => {
   });
 
   
+});
+afterAll(() => {
+  db.end();
 });

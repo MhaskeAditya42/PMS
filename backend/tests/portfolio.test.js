@@ -12,12 +12,12 @@ describe('Portfolio API', () => {
   describe('GET /api/portfolio/:userId', () => {
     it('should return portfolio data for a valid user', async () => {
       db.query.mockImplementation((query, params, callback) => {
-        callback(null, [{ stock_id: 1, quantity: 10 }]);
+        callback(null, [{ stock_id: 27, quantity: 2}]);
       });
 
       const res = await request(app).get('/api/portfolio/1');
       expect(res.statusCode).toBe(200);
-      expect(res.body).toEqual([{ stock_id: 1, quantity: 10 }]);
+      expect(res.body).toEqual([{ stock_id: 27, quantity: 2}]);
     });
 
     it('should return 404 for user with no portfolio', async () => {
@@ -25,7 +25,7 @@ describe('Portfolio API', () => {
         callback(null, []);
       });
 
-      const res = await request(app).get('/api/portfolio/999');
+      const res = await request(app).get('/api/portfolio/111');
       expect(res.statusCode).toBe(404);
     });
 
