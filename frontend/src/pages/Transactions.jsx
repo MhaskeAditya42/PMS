@@ -6,6 +6,11 @@ import { useAuth } from "../context/AuthContext"
 import { transactionsAPI, stocksAPI } from "../services/api"
 import LoadingSpinner from "../components/LoadingSpinner"
 import { Plus, Trash2, RefreshCw } from "lucide-react"
+import { Chart as ChartJS, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js"
+import { Pie, Bar } from "react-chartjs-2"
+
+// Register Chart.js components
+ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
 const Transactions = () => {
   const { user } = useAuth()
@@ -17,7 +22,7 @@ const Transactions = () => {
     stock_id: "",
     transaction_type: "BUY",
     quantity: "",
-    price: "", // Added to display the fetched price
+    price: "",
   })
 
   useEffect(() => {
@@ -57,33 +62,32 @@ const Transactions = () => {
     }
   }
 
-  // Fetch price when stock_id changes
   useEffect(() => {
     const fetchPrice = async () => {
       if (formData.stock_id) {
         try {
-          const response = await stocksAPI.getStockPrice(formData.stock_id); // Assume this API exists
+          const response = await stocksAPI.getStockPrice(formData.stock_id)
           setFormData((prev) => ({
             ...prev,
             price: response.last_price || "",
-          }));
+          }))
         } catch (error) {
-          console.error("Error fetching stock price:", error);
+          console.error("Error fetching stock price:", error)
           setFormData((prev) => ({
             ...prev,
             price: "",
-          }));
-          toast.error("Failed to load stock price");
+          }))
+          toast.error("Failed to load stock price")
         }
       } else {
         setFormData((prev) => ({
           ...prev,
           price: "",
-        }));
+        }))
       }
-    };
-    fetchPrice();
-  }, [formData.stock_id]);
+    }
+    fetchPrice()
+  }, [formData.stock_id])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -120,6 +124,36 @@ const Transactions = () => {
         toast.error("Failed to delete transaction")
       }
     }
+  }
+
+  // Prepare data for Pie Chart (BUY vs SELL distribution)
+  const transactionTypeData = {
+    labels: ["BUY", "SELL"],
+    datasets: [
+      {
+        data: [
+          transactions.filter((t) => t.transaction_type === "BUY").length,
+          transactions.filter((t) => t.transaction_type === "SELL").length,
+        ],
+        backgroundColor: ["#4CAF50", "#EF5350"],
+        borderColor: ["#388E3C", "#D32F2F"],
+        borderWidth: 1,
+      },
+    ],
+  }
+
+  // Prepare data for Bar Chart (Quantity over time)
+  const transactionQuantityData = {
+    labels: transactions.map((t) => new Date(t.transaction_date).toLocaleDateString()),
+    datasets: [
+      {
+        label: "Transaction Quantity",
+        data: transactions.map((t) => t.quantity),
+        backgroundColor: "#42A5F5",
+        borderColor: "#1E88E5",
+        borderWidth: 1,
+      },
+    ],
   }
 
   if (loading) {
@@ -199,7 +233,7 @@ const Transactions = () => {
                   type="number"
                   step="0.01"
                   value={formData.price}
-                  readOnly // Make it read-only to display fetched price
+                  readOnly
                   className="input-field bg-gray-700 text-white"
                   placeholder="Price will be fetched after selecting stock"
                 />
@@ -218,6 +252,44 @@ const Transactions = () => {
         </div>
       )}
 
+      {/* Visualizations */}
+      {transactions.length > 0 && (
+        <div className="card space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-4">Buy vs Sell Distribution</h3>
+              <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+                <Pie
+                  data={transactionTypeData}
+                  options={{
+                    plugins: {
+                      legend: { labels: { color: "#ffffff" } },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-4">Transaction Quantities by Date</h3>
+              <div style={{ maxWidth: "100%" }}>
+                <Bar
+                  data={transactionQuantityData}
+                  options={{
+                    plugins: {
+                      legend: { labels: { color: "#ffffff" } },
+                    },
+                    scales: {
+                      x: { ticks: { color: "#ffffff" } },
+                      y: { ticks: { color: "#ffffff" }, beginAtZero: true },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Transactions Table */}
       <div className="card">
         <h3 className="text-lg font-semibold text-white mb-4">Transaction History</h3>
@@ -225,23 +297,26 @@ const Transactions = () => {
         {transactions.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead>
+              <thead className="sticky top-0 bg-gray-800">
                 <tr className="border-b border-gray-700">
-                  <th className="pb-3 text-gray-400 font-medium">ID</th>
-                  <th className="pb-3 text-gray-400 font-medium">Stock ID</th>
-                  <th className="pb-3 text-gray-400 font-medium">Type</th>
-                  <th className="pb-3 text-gray-400 font-medium">Quantity</th>
-                  <th className="pb-3 text-gray-400 font-medium">Price</th>
-                  <th className="pb-3 text-gray-400 font-medium">Date</th>
-                  <th className="pb-3 text-gray-400 font-medium">Actions</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-16">ID</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Stock ID</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Type</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24 text-right">Quantity</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24 text-right">Price</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-32">Date</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {transactions.map((transaction) => (
-                  <tr key={transaction.transaction_id} className="border-b border-gray-800">
-                    <td className="py-4 text-white font-medium">{transaction.transaction_id}</td>
-                    <td className="py-4 text-gray-300">{transaction.stock_id}</td>
-                    <td className="py-4">
+                  <tr
+                    key={transaction.transaction_id}
+                    className="border-b border-gray-800 hover:bg-gray-700 transition-colors"
+                  >
+                    <td className="py-4 px-4 text-white font-medium">{transaction.transaction_id}</td>
+                    <td className="py-4 px-4 text-gray-300">{transaction.stock_id}</td>
+                    <td className="py-4 px-4">
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium ${
                           transaction.transaction_type === "BUY"
@@ -252,12 +327,14 @@ const Transactions = () => {
                         {transaction.transaction_type}
                       </span>
                     </td>
-                    <td className="py-4 text-gray-300">{transaction.quantity}</td>
-                    <td className="py-4 text-gray-300">₹{parseFloat(transaction.price || 0).toFixed(2)}</td>
-                    <td className="py-4 text-gray-300">
+                    <td className="py-4 px-4 text-gray-300 text-right">{transaction.quantity}</td>
+                    <td className="py-4 px-4 text-gray-300 text-right">
+                      ₹{parseFloat(transaction.price || 0).toFixed(2)}
+                    </td>
+                    <td className="py-4 px-4 text-gray-300">
                       {new Date(transaction.transaction_date).toLocaleDateString()}
                     </td>
-                    <td className="py-4">
+                    <td className="py-4 px-4">
                       <button
                         onClick={() => handleDelete(transaction.transaction_id)}
                         className="text-red-400 hover:text-red-300"

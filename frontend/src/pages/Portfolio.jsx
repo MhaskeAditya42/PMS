@@ -6,6 +6,11 @@ import { useAuth } from "../context/AuthContext"
 import { portfolioAPI } from "../services/api"
 import LoadingSpinner from "../components/LoadingSpinner"
 import { RefreshCw, TrendingUp, TrendingDown } from "lucide-react"
+import { Chart as ChartJS, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js"
+import { Pie, Bar } from "react-chartjs-2"
+
+// Register Chart.js components
+ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
 const Portfolio = () => {
   const { user } = useAuth()
@@ -43,6 +48,33 @@ const Portfolio = () => {
   }
 
   const totalValue = portfolio.reduce((total, item) => total + item.quantity * parseFloat(item.avg_buy_price || 0), 0)
+
+  // Prepare data for Pie Chart (Portfolio value distribution by stock)
+  const portfolioValueData = {
+    labels: portfolio.map((item) => item.stock_id),
+    datasets: [
+      {
+        data: portfolio.map((item) => item.quantity * parseFloat(item.avg_buy_price || 0)),
+        backgroundColor: ["#4CAF50", "#EF5350", "#42A5F5", "#AB47BC", "#FFCA28", "#26A69A"],
+        borderColor: ["#388E3C", "#D32F2F", "#1E88E5", "#8E24AA", "#FFB300", "#00897B"],
+        borderWidth: 1,
+      },
+    ],
+  }
+
+  // Prepare data for Bar Chart (Quantity per stock)
+  const portfolioQuantityData = {
+    labels: portfolio.map((item) => item.stock_id),
+    datasets: [
+      {
+        label: "Quantity",
+        data: portfolio.map((item) => item.quantity),
+        backgroundColor: "#42A5F5",
+        borderColor: "#1E88E5",
+        borderWidth: 1,
+      },
+    ],
+  }
 
   if (loading) {
     return (
@@ -97,6 +129,44 @@ const Portfolio = () => {
         </div>
       </div>
 
+      {/* Visualizations */}
+      {portfolio.length > 0 && (
+        <div className="card space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-4">Portfolio Value by Stock</h3>
+              <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+                <Pie
+                  data={portfolioValueData}
+                  options={{
+                    plugins: {
+                      legend: { labels: { color: "#ffffff" } },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-4">Quantity by Stock</h3>
+              <div style={{ maxWidth: "100%" }}>
+                <Bar
+                  data={portfolioQuantityData}
+                  options={{
+                    plugins: {
+                      legend: { labels: { color: "#ffffff" } },
+                    },
+                    scales: {
+                      x: { ticks: { color: "#ffffff" } },
+                      y: { ticks: { color: "#ffffff" }, beginAtZero: true },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Portfolio Table */}
       <div className="card">
         <h3 className="text-lg font-semibold text-white mb-4">Holdings</h3>
@@ -104,23 +174,26 @@ const Portfolio = () => {
         {portfolio.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead>
+              <thead className="sticky top-0 bg-gray-800">
                 <tr className="border-b border-gray-700">
-                  <th className="pb-3 text-gray-400 font-medium">Stock ID</th>
-                  <th className="pb-3 text-gray-400 font-medium">Quantity</th>
-                  <th className="pb-3 text-gray-400 font-medium">Avg Buy Price</th>
-                  <th className="pb-3 text-gray-400 font-medium">Current Quantity</th>
-                  <th className="pb-3 text-gray-400 font-medium">Total Value</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Stock ID</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24 text-right">Quantity</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-28 text-right">Avg Buy Price</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-28 text-right">Current Quantity</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-28 text-right">Total Value</th>
                 </tr>
               </thead>
               <tbody>
                 {portfolio.map((item, index) => (
-                  <tr key={index} className="border-b border-gray-800">
-                    <td className="py-4 text-white font-medium">{item.stock_id}</td>
-                    <td className="py-4 text-gray-300">{item.quantity}</td>
-                    <td className="py-4 text-gray-300">₹{parseFloat(item.avg_buy_price || 0).toFixed(2)}</td>
-                    <td className="py-4 text-gray-300">{item.current_quantity || item.quantity}</td>
-                    <td className="py-4 text-green-400 font-medium">
+                  <tr
+                    key={index}
+                    className="border-b border-gray-800 hover:bg-gray-700 transition-colors"
+                  >
+                    <td className="py-4 px-4 text-white font-medium">{item.stock_id}</td>
+                    <td className="py-4 px-4 text-gray-300 text-right">{item.quantity}</td>
+                    <td className="py-4 px-4 text-gray-300 text-right">₹{parseFloat(item.avg_buy_price || 0).toFixed(2)}</td>
+                    <td className="py-4 px-4 text-gray-300 text-right">{item.current_quantity || item.quantity}</td>
+                    <td className="py-4 px-4 text-green-400 font-medium text-right">
                       ₹{(item.quantity * parseFloat(item.avg_buy_price || 0)).toFixed(2)}
                     </td>
                   </tr>
