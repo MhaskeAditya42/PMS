@@ -6,11 +6,11 @@ import { useAuth } from "../context/AuthContext"
 import { transactionsAPI, stocksAPI } from "../services/api"
 import LoadingSpinner from "../components/LoadingSpinner"
 import { Plus, Trash2, RefreshCw } from "lucide-react"
-import { Chart as ChartJS, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js"
-import { Pie, Bar } from "react-chartjs-2"
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js"
+import { Bar } from "react-chartjs-2"
 
 // Register Chart.js components
-ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
 const Transactions = () => {
   const { user } = useAuth()
@@ -126,22 +126,6 @@ const Transactions = () => {
     }
   }
 
-  // Prepare data for Pie Chart (BUY vs SELL distribution)
-  const transactionTypeData = {
-    labels: ["BUY", "SELL"],
-    datasets: [
-      {
-        data: [
-          transactions.filter((t) => t.transaction_type === "BUY").length,
-          transactions.filter((t) => t.transaction_type === "SELL").length,
-        ],
-        backgroundColor: ["#4CAF50", "#EF5350"],
-        borderColor: ["#388E3C", "#D32F2F"],
-        borderWidth: 1,
-      },
-    ],
-  }
-
   // Prepare data for Bar Chart (Quantity over time)
   const transactionQuantityData = {
     labels: transactions.map((t) => new Date(t.transaction_date).toLocaleDateString()),
@@ -191,7 +175,7 @@ const Transactions = () => {
                 <select
                   value={formData.stock_id}
                   onChange={(e) => setFormData({ ...formData, stock_id: e.target.value })}
-                  className="input-field border rounded-md w-[350px]"
+                  className="input-field border rounded-md w-[510px] py-1 "
                   required
                 >
                   <option value="">Select a stock</option>
@@ -208,7 +192,7 @@ const Transactions = () => {
                 <select
                   value={formData.transaction_type}
                   onChange={(e) => setFormData({ ...formData, transaction_type: e.target.value })}
-                  className="input-field border rounded-md w-[350px]"
+                  className="input-field border rounded-md w-[510px] py-1 "
                 >
                   <option value="BUY">BUY</option>
                   <option value="SELL">SELL</option>
@@ -221,7 +205,7 @@ const Transactions = () => {
                   type="number"
                   value={formData.quantity}
                   onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                  className="input-field border rounded-md w-[350px]"
+                  className="input-field border rounded-md w-[510px] py-1 "
                   required
                   min="1"
                 />
@@ -234,13 +218,24 @@ const Transactions = () => {
                   step="0.01"
                   value={formData.price}
                   readOnly
-                  className="input-field bg-gray-700 text-white border rounded-md w-[350px] px-2"
+                  className="input-field bg-gray-700 text-white border rounded-md w-[510px] py-1 px-2"
+                  placeholder="Price will be fetched after selecting stock"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Total Amount</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={formData.price*formData.quantity}
+                  readOnly
+                  className="input-field bg-gray-700 text-white border rounded-md w-[510px] py-1 px-2"
                   placeholder="Price will be fetched after selecting stock"
                 />
               </div>
 
               <div className="flex space-x-2 pt-4">
-                <button type="submit" className="transaction-btn1 btn-primary flex-1">
+                <button type="submit" className="transaction-btn1 btn-primary flex-1 ">
                   Create Transaction
                 </button>
                 <button type="button" onClick={() => setShowForm(false)} className="transaction-btn2 btn-secondary flex-1">
@@ -255,36 +250,42 @@ const Transactions = () => {
       {/* Visualizations */}
       {transactions.length > 0 && (
         <div className="card space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Buy vs Sell Distribution</h3>
-              <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-                <Pie
-                  data={transactionTypeData}
-                  options={{
-                    plugins: {
-                      legend: { labels: { color: "#ffffff" } },
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-4">Transaction Quantities by Date</h3>
+            <div style={{ maxWidth: "100%" }}>
+              <Bar
+                data={transactionQuantityData}
+                options={{
+                  plugins: {
+                    legend: { labels: { color: "#000000" } },
+                    tooltip: {
+                      callbacks: {
+                        title: (context) => `Date: ${context[0].label}`,
+                        label: (context) => `Quantity: ${context.parsed.y}`,
+                      },
                     },
-                  }}
-                />
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Transaction Quantities by Date</h3>
-              <div style={{ maxWidth: "100%" }}>
-                <Bar
-                  data={transactionQuantityData}
-                  options={{
-                    plugins: {
-                      legend: { labels: { color: "#ffffff" } },
+                  },
+                  scales: {
+                    x: { 
+                      title: {
+                        display: true,
+                        text: 'Date',
+                        color: '#000000',
+                      },
+                      ticks: { color: "#000000" },
                     },
-                    scales: {
-                      x: { ticks: { color: "#ffffff" } },
-                      y: { ticks: { color: "#ffffff" }, beginAtZero: true },
+                    y: { 
+                      title: {
+                        display: true,
+                        text: 'Quantity',
+                        color: '#000000',
+                      },
+                      ticks: { color: "#000000" },
+                      beginAtZero: true,
                     },
-                  }}
-                />
-              </div>
+                  },
+                }}
+              />
             </div>
           </div>
         </div>
@@ -300,7 +301,7 @@ const Transactions = () => {
               <thead className="sticky top-0 bg-gray-800">
                 <tr className="border-b border-gray-700">
                   <th className="pb-3 px-4 text-gray-400 font-medium w-16">ID</th>
-                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Stock ID</th>
+                  <th className="pb-3 px-4 text-gray-400 font-medium w-24">Symbol</th>
                   <th className="pb-3 px-4 text-gray-400 font-medium w-24">Type</th>
                   <th className="pb-3 px-4 text-gray-400 font-medium w-24 text-right">Quantity</th>
                   <th className="pb-3 px-4 text-gray-400 font-medium w-24 text-right">Price</th>
@@ -315,7 +316,7 @@ const Transactions = () => {
                     className="border-b border-gray-800 hover:bg-gray-700 transition-colors"
                   >
                     <td className="py-4 px-4 text-white font-medium">{transaction.transaction_id}</td>
-                    <td className="py-4 px-4 text-gray-300">{transaction.stock_id}</td>
+                    <td className="py-4 px-4 text-gray-300">{transaction.symbol}</td>
                     <td className="py-4 px-4">
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium ${

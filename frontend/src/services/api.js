@@ -184,13 +184,13 @@ export const watchlistAPI = {
     }
   },
   removeFromWatchlist: async (userId, stockId) => {
-    try {
-      const response = await api.delete(`/watchlist/user/${userId}/stock/${stockId}`)
-      return response.data
-    } catch (error) {
-      throw error.response?.data || error.message
-    }
-  },
+  try {
+    const response = await api.delete(`/watchlist/user/${userId}/stock/${stockId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+},
 }
 
 // Wallet API

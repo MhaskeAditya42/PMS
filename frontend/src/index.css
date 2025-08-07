@@ -9,30 +9,6 @@ h1,h2{
   color : blue;
 }
 
-.transaction-btn1{
-  padding:6px;
-  background-color: green;
-  border-radius:20px;
-  color:white;
-  font-weight:bold;
-}
-
-.transaction-btn1:hover{
-  scale:1.15;
-}
-
-
-.transaction-btn2{
-  padding:6px;
-  background-color: red;
-  border-radius:20px;
-  color:white;
-  font-weight:bold;
-}
-.transaction-btn2:hover{
-scale:1.15;
-}
-
 
 .sidebar:hover{
   background-color: rgba(0, 0, 255, 0.692);
@@ -73,6 +49,32 @@ button:hover{
 #sidebar-icons{
   outline: none;
   border:transparent;
+}
+
+.transaction-btn1{
+  background-color: green;
+  border-radius:10px;
+  color:white;
+  font-weight:bold;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.transaction-btn1:hover{
+  scale:1.15;
+}
+
+
+.transaction-btn2{
+  background-color: red;
+  border-radius:10px;
+  color:white;
+  font-weight:bold;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.transaction-btn2:hover{
+scale:1.15;
 }
 /* @tailwind utilities;
 
