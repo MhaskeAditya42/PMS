@@ -9,6 +9,30 @@ h1,h2{
   color : blue;
 }
 
+.transaction-btn1{
+  padding:6px;
+  background-color: green;
+  border-radius:20px;
+  color:white;
+  font-weight:bold;
+}
+
+.transaction-btn1:hover{
+  scale:1.15;
+}
+
+
+.transaction-btn2{
+  padding:6px;
+  background-color: red;
+  border-radius:20px;
+  color:white;
+  font-weight:bold;
+}
+.transaction-btn2:hover{
+scale:1.15;
+}
+
 
 .sidebar:hover{
   background-color: rgba(0, 0, 255, 0.692);

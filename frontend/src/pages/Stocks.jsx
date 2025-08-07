@@ -142,7 +142,7 @@ const Stocks = () => {
             placeholder="Search stocks by symbol or ISIN..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="input-field pl-10"
+            className="input-field pl-10 w-[1180px] p-3 border-1 placeholder:pl"
           />
         </div>
       </div>

@@ -183,7 +183,7 @@ const Transactions = () => {
       {/* Transaction Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 p-6 rounded-lg w-full max-w-md">
+          <div className="bg-gray-800 p-6 rounded-lg w-full max-w-md border">
             <h3 className="text-lg font-semibold text-white mb-4">New Transaction</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -191,7 +191,7 @@ const Transactions = () => {
                 <select
                   value={formData.stock_id}
                   onChange={(e) => setFormData({ ...formData, stock_id: e.target.value })}
-                  className="input-field"
+                  className="input-field border rounded-md w-[350px]"
                   required
                 >
                   <option value="">Select a stock</option>
@@ -208,7 +208,7 @@ const Transactions = () => {
                 <select
                   value={formData.transaction_type}
                   onChange={(e) => setFormData({ ...formData, transaction_type: e.target.value })}
-                  className="input-field"
+                  className="input-field border rounded-md w-[350px]"
                 >
                   <option value="BUY">BUY</option>
                   <option value="SELL">SELL</option>
@@ -221,7 +221,7 @@ const Transactions = () => {
                   type="number"
                   value={formData.quantity}
                   onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                  className="input-field"
+                  className="input-field border rounded-md w-[350px]"
                   required
                   min="1"
                 />
@@ -234,16 +234,16 @@ const Transactions = () => {
                   step="0.01"
                   value={formData.price}
                   readOnly
-                  className="input-field bg-gray-700 text-white"
+                  className="input-field bg-gray-700 text-white border rounded-md w-[350px] px-2"
                   placeholder="Price will be fetched after selecting stock"
                 />
               </div>
 
               <div className="flex space-x-2 pt-4">
-                <button type="submit" className="btn-primary flex-1">
+                <button type="submit" className="transaction-btn1 btn-primary flex-1">
                   Create Transaction
                 </button>
-                <button type="button" onClick={() => setShowForm(false)} className="btn-secondary flex-1">
+                <button type="button" onClick={() => setShowForm(false)} className="transaction-btn2 btn-secondary flex-1">
                   Cancel
                 </button>
               </div>
