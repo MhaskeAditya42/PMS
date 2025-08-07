@@ -15,7 +15,7 @@ const mysql = require('mysql2');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'n3u3da!',
+  password: 'Pass@123',
   database: 'portfolio_manager'
 });
 
